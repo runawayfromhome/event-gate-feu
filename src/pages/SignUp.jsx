@@ -1,10 +1,7 @@
-import React from 'react'
-import NavBar from '../Components/NavBar'
-import MainLayouts from '../layouts/MainLayouts'
+import MainLayout from "../layouts/MainLayouts";
 
 const SignUp = () => {
-    return <MainLayouts>
-     
-    </MainLayouts>
-}
-export default SignUp
+	return <MainLayout>This is the Signup</MainLayout>;
+};
+
+export default SignUp;
