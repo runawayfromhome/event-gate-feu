@@ -1,9 +1,24 @@
-import React from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router";
 import SignUpIcon from "./icons/SignUpIcon";
 import HomeIcon from "./icons/HomeIcon";
+import { SessionContext } from "../contexts/SessionContext";
+import { supabase } from "../utils/supabase";
+
+
+async function SignOut() {
+	const { error } = await supabase.auth.signOut()
+}
+
+const handleLogout = async () => {
+	const { error } = await supabase.auth.signOut();
+	if (error) alert("ewan ko sayu ya");
+};
 
 const NavBar = () => {
+	const context = useContext(SessionContext);
+	const session = context?.session;
+
 	return (
 		<div className="navbar bg-base-100 shadow-sm">
 			<div className="flex w-full max-w-7xl mx-auto">
@@ -14,17 +29,43 @@ const NavBar = () => {
 					</a>
 				</div>
 				<div className="flex-none">
-					<NavLink
-						to="/"
-						className="btn btn-primary mr-4 rounded-full btn-outline"
-					>
-						<HomeIcon className="text-lg" />
-						Home
-					</NavLink>
-					<NavLink to="/sign-up" className="btn btn-primary mr-4 rounded-full">
-						<SignUpIcon className="text-lg" />
-						Sign Up
-					</NavLink>
+
+					{session && (
+						<NavLink
+							to="/"
+							className="btn btn-primary mr-4 rounded-full btn-outline"
+						>
+							<HomeIcon className="text-lg" />
+							Home
+						</NavLink>
+					)}
+
+					{!session && (
+						<NavLink
+							to="/sign-in"
+							className="btn btn-primary mr-4 rounded-full btn-outline"
+						>
+							<HomeIcon className="text-lg" />
+							Log In
+						</NavLink>
+					)}
+
+					{!session && (
+
+
+
+
+
+						<NavLink
+							to="/sign-up"
+							className="btn btn-primary mr-4 rounded-full"
+						>
+							<SignUpIcon className="text-lg" />
+							Sign Up
+						</NavLink>
+
+					)}
+
 					<div className="dropdown dropdown-end">
 						<div
 							tabIndex={0}
@@ -52,7 +93,7 @@ const NavBar = () => {
 								<a>Settings</a>
 							</li>
 							<li>
-								<a>Logout</a>
+								<a onClick={handleLogout}>Logout</a>
 							</li>
 						</ul>
 					</div>

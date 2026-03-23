@@ -1,13 +1,12 @@
+import daisyui from "daisyui";
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
   },
-  plugins: [require("daisyui")],
+  plugins: [daisyui],
   daisyui: {
     themes: [
       {
@@ -18,10 +17,10 @@ export default {
       },
       {
         dark: {
-          primary: "#056283b", // Note: This looks like a typo, perhaps "#05628b" or correct it
+          primary: "#05683b",
           secondary: "#febe10",
         },
       },
     ],
   },
-}
+};
