@@ -31,7 +31,7 @@ function App() {
 	return (
 		<SessionContext.Provider value={{ session }}>
 			<Routes>
-				<Route path="/" element={<HomePage />} />
+				<Route path="/" element={<SignIn />} />
 				<Route path="/sign-up" element={<SignUp />} />
 				<Route path="/sign-in" element={<SignIn />} />
 			</Routes>
