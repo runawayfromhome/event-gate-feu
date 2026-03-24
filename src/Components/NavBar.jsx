@@ -4,20 +4,22 @@ import SignUpIcon from "./icons/SignUpIcon";
 import HomeIcon from "./icons/HomeIcon";
 import { SessionContext } from "../contexts/SessionContext";
 import { supabase } from "../utils/supabase";
+import Profile from "../pages/Profile";
 
-
-async function SignOut() {
-	const { error } = await supabase.auth.signOut()
-}
+// async function SignOut() {
+// 	const { error } = await supabase.auth.signOut()
+// }
 
 const handleLogout = async () => {
 	const { error } = await supabase.auth.signOut();
 	if (error) alert("ewan ko sayu ya");
 };
 
+
+
 const NavBar = () => {
-	const context = useContext(SessionContext);
-	const session = context?.session;
+	const session = useContext(SessionContext);
+
 
 	return (
 		<div className="navbar bg-base-100 shadow-sm">
@@ -66,37 +68,43 @@ const NavBar = () => {
 
 					)}
 
-					<div className="dropdown dropdown-end">
-						<div
-							tabIndex={0}
-							role="button"
-							className="btn btn-ghost btn-circle avatar"
-						>
-							<div className="w-10 rounded-full">
-								<img
-									alt="Tailwind CSS Navbar component"
-									src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-								/>
+					{session && (
+
+						<div className="dropdown dropdown-end">
+							<div
+								tabIndex={0}
+								role="button"
+								className="btn btn-ghost btn-circle avatar"
+							>
+								<div className="w-10 rounded-full">
+									<img
+										alt="Tailwind CSS Navbar component"
+										src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+									/>
+								</div>
 							</div>
+							<ul
+								tabIndex="-1"
+								className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+							>
+								<li>
+									<NavLink to="/profile" className="justify-between">
+										<p className="justify-between">
+											Profile
+											<span className="badge">New</span>
+										</p>
+									</NavLink>
+								</li>
+								<li>
+									<a>Settings</a>
+								</li>
+								<li>
+									<a onClick={handleLogout}>Logout</a>
+								</li>
+							</ul>
 						</div>
-						<ul
-							tabIndex="-1"
-							className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-						>
-							<li>
-								<a className="justify-between">
-									Profile
-									<span className="badge">New</span>
-								</a>
-							</li>
-							<li>
-								<a>Settings</a>
-							</li>
-							<li>
-								<a onClick={handleLogout}>Logout</a>
-							</li>
-						</ul>
-					</div>
+
+					)}
 				</div>
 			</div>
 		</div>

@@ -1,4 +1,6 @@
 import { createContext } from "react";
 
-export const SessionContext = createContext({ session: null });
+export const SessionContext = createContext(null);
+
+
 

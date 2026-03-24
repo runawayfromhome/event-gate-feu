@@ -6,7 +6,7 @@ import SignIn from "./pages/SignIn";
 import { useState, useEffect } from "react";
 import { supabase } from "./utils/supabase";
 import { SessionContext } from "./contexts/SessionContext";
-
+import Profile from "./pages/Profile";
 function App() {
 
 	const [session, setSession] = useState(null);
@@ -24,17 +24,21 @@ function App() {
 			}
 		});
 
-		return () => subscription.unsubscribe();
+		return () => { subscription.unsubscribe(); };
 	}, []);
 
 
+
+
 	return (
-		<SessionContext.Provider value={{ session }}>
+		<SessionContext.Provider value={session}>
 			<Routes>
 				<Route path="/" element={<HomePage />} />
 				<Route path="/sign-up" element={<SignUp />} />
 				<Route path="/sign-in" element={<SignIn />} />
+				<Route path="/profile" element={<Profile />} />
 			</Routes>
+
 		</SessionContext.Provider>
 	);
 
