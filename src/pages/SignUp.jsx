@@ -3,9 +3,23 @@ import Input from "../Components/form/input";
 import Card from "../Components/Card";
 import SendIcon from "../Components/icons/SendIcon";
 import { supabase } from "../utils/supabase";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { SessionContext } from "../contexts/SessionContext";
+
+
 
 
 const SignUp = () => {
+	const { session } = useContext(SessionContext);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (session) {
+			navigate("/");
+		}
+	}, [session, navigate]);
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const formData = new FormData(event.target);
