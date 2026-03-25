@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Input = ({ label, type, placeholder, name }) => {
+const Input = ({ label, type, placeholder, name, defaultValue }) => {
     return (
         <div>
             <fieldset className="fieldset">
@@ -10,7 +10,7 @@ const Input = ({ label, type, placeholder, name }) => {
                     type={type}
                     className="input"
                     placeholder={placeholder}
-
+                    defaultValue={defaultValue}
 
                 />
 

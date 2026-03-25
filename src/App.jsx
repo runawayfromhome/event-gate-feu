@@ -7,9 +7,11 @@ import { useState, useEffect } from "react";
 import { supabase } from "./utils/supabase";
 import { SessionContext } from "./contexts/SessionContext";
 import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
 function App() {
 
 	const [session, setSession] = useState(null);
+	const [profile, setProfile] = useState(null);
 
 	useEffect(() => {
 		const {
@@ -28,15 +30,37 @@ function App() {
 	}, []);
 
 
+	useEffect(() => {
+		const fetchProfile = async () => {
+			const { data, error } = await supabase
+				.from("profiles")
+				.select()
+				.eq("id", session.user.id)
+				.single()
+			if (error) alert(error)
+			if (data) {
+				console.log("data", data)
+				setProfile(data)
+			}
+		};
+		if (session) {
+			fetchProfile()
+		}
+
+
+	}, [session]);
+
+
 
 
 	return (
-		<SessionContext.Provider value={session}>
+		<SessionContext.Provider value={{ session, profile }}>
 			<Routes>
 				<Route path="/" element={<HomePage />} />
 				<Route path="/sign-up" element={<SignUp />} />
 				<Route path="/sign-in" element={<SignIn />} />
 				<Route path="/profile" element={<Profile />} />
+				<Route path="/profile-edit" element={<EditProfile />} />
 			</Routes>
 
 		</SessionContext.Provider>

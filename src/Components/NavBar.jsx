@@ -5,7 +5,6 @@ import HomeIcon from "./icons/HomeIcon";
 import { SessionContext } from "../contexts/SessionContext";
 import { supabase } from "../utils/supabase";
 import Profile from "../pages/Profile";
-
 // async function SignOut() {
 // 	const { error } = await supabase.auth.signOut()
 // }
@@ -18,7 +17,7 @@ const handleLogout = async () => {
 
 
 const NavBar = () => {
-	const session = useContext(SessionContext);
+	const { session } = useContext(SessionContext);
 
 
 	return (
