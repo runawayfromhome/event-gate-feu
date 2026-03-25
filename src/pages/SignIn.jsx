@@ -3,8 +3,22 @@ import Input from "../Components/form/input";
 import Card from "../Components/Card";
 import SendIcon from "../Components/icons/SendIcon";
 import { supabase } from "../utils/supabase";
-
+import { useContext, useEffect } from "react";
+import { SessionContext } from "../contexts/SessionContext";
+import { useNavigate } from "react-router";
 const SignIn = () => {
+    const { session, profile } = useContext(SessionContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (profile?.role === "user") {
+            navigate("/");
+        } else if (profile?.role === "admin") {
+            navigate("/manage-events");
+        }
+
+    }, [profile, navigate]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);

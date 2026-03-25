@@ -5,6 +5,9 @@ import HomeIcon from "./icons/HomeIcon";
 import { SessionContext } from "../contexts/SessionContext";
 import { supabase } from "../utils/supabase";
 import Profile from "../pages/Profile";
+import ManageEvents from "../pages/ManageEvents";
+
+
 // async function SignOut() {
 // 	const { error } = await supabase.auth.signOut()
 // }
@@ -17,8 +20,9 @@ const handleLogout = async () => {
 
 
 const NavBar = () => {
-	const { session } = useContext(SessionContext);
-
+	const { session, profile } = useContext(SessionContext);
+	// console.log("NavBar Session Data:", session);
+	// console.log("NavBar Profile Data:", profile);
 
 	return (
 		<div className="navbar bg-base-100 shadow-sm">
@@ -31,14 +35,29 @@ const NavBar = () => {
 				</div>
 				<div className="flex-none">
 
+
+					{(profile?.role === 'admin') && (
+						<NavLink
+							to="/manage-events"
+							className="btn btn-primary mr-4 rounded-full btn-outline">
+
+							<HomeIcon className="text-lg" />
+							Manage Events
+						</NavLink>
+
+					)}
+
+
 					{session && (
 						<NavLink
 							to="/"
 							className="btn btn-primary mr-4 rounded-full btn-outline"
 						>
 							<HomeIcon className="text-lg" />
-							Home
+							hey
+
 						</NavLink>
+
 					)}
 
 					{!session && (
