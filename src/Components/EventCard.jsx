@@ -1,5 +1,6 @@
 import React from 'react'
 import Card from './Card'
+import { Link } from 'react-router'
 const EventCard = ({ event }) => {
     return (
         <Card>
@@ -9,6 +10,22 @@ const EventCard = ({ event }) => {
             <p>Start Time: {event.start_time}</p>
             <p>End Time: {event.end_time}</p>
             <p>Location: {event.location}</p>
+            <div className="pt-5">
+                <Link
+                    to={`/edit-event/${event.id}`}
+                    className="btn btn-secondary rounded-full"
+                >
+                    Edit Event
+                </Link>
+
+                <Link
+                    to={`/view-event/${event.id}`}
+                    className="btn btn-danger rounded-full ml-3 btn-outline"
+                >
+                    View
+                </Link>
+                <button className="btn btn-secondary rounded-full ml-3">Delete</button>
+            </div>
         </Card>
     )
 }
