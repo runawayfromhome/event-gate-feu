@@ -11,10 +11,7 @@ const Input = ({ label, type, placeholder, name, defaultValue }) => {
                     className="input"
                     placeholder={placeholder}
                     defaultValue={defaultValue}
-
                 />
-
-
             </fieldset>
         </div>
     );

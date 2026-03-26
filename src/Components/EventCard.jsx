@@ -1,33 +1,104 @@
 import React from 'react'
 import Card from './Card'
 import { Link } from 'react-router'
-const EventCard = ({ event }) => {
+import { supabase } from '../utils/supabase'
+import { useContext } from 'react'
+import { SessionContext } from '../contexts/SessionContext'
+
+
+
+const EventCard = ({ event, registrations, setRegistrations }) => {
+    const { profile } = useContext(SessionContext);
+    const isRegistered = registrations?.some(
+        (registration) =>
+            registration.profile_id === profile?.id &&
+            registration.event_id === event.id,
+    );
+
+    const register = async () => {
+        const { data, error } = await supabase
+            .from("registrations")
+            .insert({
+                event_id: event.id,
+                profile_id: profile.id,
+            })
+            .select()
+            .single();
+
+        if (error) alert(error);
+        if (data) {
+            setRegistrations((prev) => {
+                return [...prev, data];
+            });
+        }
+    };
+
+    const unregister = async () => {
+        const { data: deletedRegistration, errorDeleteRegistration } =
+            await supabase
+                .from("registrations")
+                .delete()
+                .eq("event_id", event.id)
+                .select()
+                .single();
+        if (errorDeleteRegistration) alert(deletedRegistration);
+        if (deletedRegistration) {
+            const updatedRegistrations = registrations.filter((registration) => {
+                return registration.id != deletedRegistration.id;
+            });
+            setRegistrations(updatedRegistrations);
+        }
+    };
+
     return (
         <Card>
-            <h2>{event.title}</h2>
+            <h2 className="text-xl font-bold">{event.title}</h2>
             <p>Start Date: {event.start_date}</p>
             <p>End Date: {event.end_date}</p>
             <p>Start Time: {event.start_time}</p>
             <p>End Time: {event.end_time}</p>
             <p>Location: {event.location}</p>
+
             <div className="pt-5">
                 <Link
-                    to={`/edit-event/${event.id}`}
-                    className="btn btn-secondary rounded-full"
-                >
-                    Edit Event
-                </Link>
-
-                <Link
                     to={`/view-event/${event.id}`}
-                    className="btn btn-danger rounded-full ml-3 btn-outline"
+                    className="btn btn-primary rounded-full ml-3 btn-outline"
                 >
                     View
                 </Link>
-                <button className="btn btn-secondary rounded-full ml-3">Delete</button>
+
+                {profile?.role === "admin" && (
+                    <>
+                        <Link
+                            to={`/edit-event/${event.id}`}
+                            className="btn btn-primary rounded-full"
+                        >
+                            Edit
+                        </Link>
+
+                        <button className="btn btn-secondary rounded-full ml-3">
+                            Delete
+                        </button>
+                    </>
+                )}
+
+                {profile?.role === "user" && !isRegistered && (
+                    <button className="ml-3 btn btn-primary rounded-full" onClick={register}>
+                        Register
+                    </button>
+                )}
+
+                {profile?.role === "user" && isRegistered && (
+                    <button
+                        className="ml-3 btn btn-secondary rounded-full"
+                        onClick={unregister}
+                    >
+                        Unregister
+                    </button>
+                )}
             </div>
         </Card>
-    )
-}
+    );
+};
 
-export default EventCard
+export default EventCard;

@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import MainLayout from "../layouts/MainLayouts";
 import { Link } from "react-router";
-import Input from "../Components/form/input";
 import { supabase } from "../utils/supabase";
 import { useEffect } from "react";
-import { useState } from "react";
 import EventCard from "../Components/EventCard";
-import EditEvent from "./EditEvent";
-const ManageEvents = () => {
+import { useContext } from "react";
+import { SessionContext } from "../contexts/SessionContext";
+
+const Events = () => {
+
     const [events, setEvents] = useState(null);
+    const [registrations, setRegistrations] = useState(null);
+    const { profile } = useContext(SessionContext);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -20,16 +23,24 @@ const ManageEvents = () => {
         };
 
         fetchEvents();
-    }, []);
+
+        const fetchRegistrations = async () => {
+            const { data: registrationsData, error: registrationsError } =
+                await supabase
+                    .from("registrations")
+                    .select()
+                    .eq("profile_id", profile?.id);
+            if (registrationsError) alert(registrationsError);
+            if (registrationsData) setRegistrations(registrationsData);
+        };
+        fetchRegistrations();
+    }, [profile]);
+
+    console.log("registrations", registrations);
 
     return (
         <MainLayout>
             <div className="pt-5">
-                <div className="text-right">
-                    <Link to="/add-event" className="btn btn-primary rounded-full">
-                        Add Event
-                    </Link>
-                </div>
                 <div className="grid grid-cols-3 gap-4">
                     {events?.map((event) => {
                         return <EventCard event={event} />;
@@ -40,4 +51,4 @@ const ManageEvents = () => {
     );
 };
 
-export default ManageEvents;
+export default Events;

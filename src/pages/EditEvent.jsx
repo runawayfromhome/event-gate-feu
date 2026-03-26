@@ -4,6 +4,7 @@ import { supabase } from '../utils/supabase'
 import { useEffect, useState } from 'react'
 import Input from '../Components/form/input'
 import { useParams } from 'react-router'
+import EventForm from '../Components/EventForm'
 
 const EditEvent = () => {
     const { eventId } = useParams();
@@ -19,17 +20,14 @@ const EditEvent = () => {
             if (eventError) alert(eventError);
             if (eventData) setEvent(eventData);
         };
+
         fetchEvent();
     }, [eventId]);
-
-
-
     return (
         <MainLayout>
-            This is the Edit Event page here you can edit the event with id and eventId is the people can edit in this
+            <EventForm eventData={event} />
         </MainLayout>
+    );
+};
 
-    )
-}
-
-export default EditEvent
+export default EditEvent;
